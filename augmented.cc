@@ -3,18 +3,6 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/tracking.hpp>
-#include <opencv2/core/ocl.hpp>
-#include <opencv2/core/opengl.hpp>
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
-#include <glm/glm/glm.hpp>
-#include <glm/glm/gtc/matrix_transform.hpp>
-#include <glm/glm/gtc/type_ptr.hpp>
-
-#define STB_IMAGE_IMPLEMENTATION
-#include "./stb_image.h"
-#include "./Shader.h"
 #include <iostream>
 #include <string>
 
@@ -157,11 +145,6 @@ int main() {
                     init = 1;
                     reorder(initialPoints);
                     auto homo = getWarp(mask,imgWarp,initialPoints,w,h); //mask will contain RGB-transformed homography mask
-                    //Decompose homography.
-                    decomposeHomographyMat(homo,K,Rs,Ts,Ns);
-                    vector<Point2f> floatPts;
-                    Mat(initialPoints).convertTo(floatPts,Mat(floatPts).type());
-                    filterHomographyDecompByVisibleRefpoints(Rs,Ns,imgPts,floatPts,sols);
                     oldMask = mask;
                     threshold(mask,real,1,255,THRESH_BINARY);
                     bitwise_not(real,invreal);
